@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController, LoadingController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth';
 
 @Component({
   selector: 'app-home',
@@ -10,22 +11,54 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [IonicModule, FormsModule, CommonModule],
-  
 })
 export class HomePage {
   email: string = '';
   senha: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController
+  ) {}
 
-  entrar() {
+  async entrar() {
     if (!this.email || !this.senha) {
-      // Exibir alerta de campos obrigatórios
+      const alert = await this.alertCtrl.create({
+        header: 'Atenção',
+        message: 'Preencha e-mail e senha.',
+        buttons: ['OK'],
+      });
+      await alert.present();
       return;
     }
 
-    // Lógica de autenticação
-    // Ex: this.authService.home(this.email, this.senha)
-    this.router.navigate(['/produtos']);
+    const loading = await this.loadingCtrl.create({ message: 'Entrando...' });
+    await loading.present();
+
+    this.authService.login(this.email, this.senha).subscribe({
+      next: async () => {
+        await loading.dismiss();
+        this.router.navigate(['/produto']);
+      },
+      error: async (err: any) => {
+        await loading.dismiss();
+        const msg =
+          err.status === 401
+            ? 'E-mail ou senha inválidos.'
+            : 'Erro ao conectar com o servidor.';
+        const alert = await this.alertCtrl.create({
+          header: 'Erro',
+          message: msg,
+          buttons: ['OK'],
+        });
+        await alert.present();
+      },
+    });
+  }
+
+  irParaCadastro() {
+    this.router.navigate(['/cadastro']);
   }
 }

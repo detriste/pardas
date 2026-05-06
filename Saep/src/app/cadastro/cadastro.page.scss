@@ -1,0 +1,104 @@
+:host {
+    --ion-background-color: #f0f0f0;
+  }
+  
+  .cadastro-content {
+    --background: #f0f0f0;
+  }
+  
+  .cadastro-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    padding: 40px 16px;
+  }
+  
+  .cadastro-card {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cadastro-title {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333333;
+    text-align: center;
+    margin: 0 0 4px 0;
+    letter-spacing: 0.3px;
+  }
+  
+  .cadastro-subtitle {
+    font-size: 13px;
+    color: #888888;
+    text-align: center;
+    margin: 0 0 28px 0;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #222222;
+    margin-bottom: 6px;
+  }
+  
+  .custom-input {
+    --background: #ffffff;
+    --color: #333333;
+    --placeholder-color: #aaaaaa;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    font-size: 14px;
+    width: 100%;
+  
+    &.has-focus {
+      border-color: #555555;
+    }
+  }
+  
+  .btn-cadastrar {
+    --background: #1a1a1a;
+    --background-activated: #333333;
+    --background-hover: #333333;
+    --border-radius: 3px;
+    --color: #ffffff;
+    --padding-top: 14px;
+    --padding-bottom: 14px;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-top: 24px;
+    height: 46px;
+  }
+  
+  .link-login {
+    text-align: center;
+    font-size: 13px;
+    color: #777777;
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+  
+  .link {
+    color: #1a1a1a;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+  
+    &:hover {
+      color: #444444;
+    }
+  }

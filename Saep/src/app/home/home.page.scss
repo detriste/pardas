@@ -76,3 +76,22 @@
   margin-top: 24px;
   height: 46px;
 }
+
+.link-cadastro {
+  text-align: center;
+  font-size: 13px;
+  color: #777777;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.link {
+  color: #1a1a1a;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    color: #444444;
+  }
+}

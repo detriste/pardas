@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonicModule, AlertController } from '@ionic/angular';
+import { IonicModule, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ProdutoService, Produto } from '../services/produto';
+import { AuthService } from '../services/auth';
 
-export interface Produto {
+// Modelo local mapeado do backend
+interface ProdutoView {
   id: number;
   nome: string;
   descricao: string;
@@ -20,29 +23,57 @@ export interface Produto {
   standalone: true,
   imports: [IonicModule, FormsModule, CommonModule],
 })
-export class ProdutoPage implements OnInit { // ✅ Nome corrigido
+export class ProdutoPage implements OnInit {
   termoBusca: string = '';
+  nomeUsuario: string = 'Usuário';
 
-  produtos: Produto[] = [ // ✅ plural padronizado
-    { id: 3, nome: 'Borracha Branca', descricao: 'Borracha macia escolar', preco: 1.50, estoque: 200, estoqueMin: 30 },
-    { id: 2, nome: 'Caderno Universitário', descricao: 'Caderno 200 folhas capa dura', preco: 25.90, estoque: 80, estoqueMin: 10 },
-    { id: 1, nome: 'Caneta Esferográfica', descricao: 'Caneta azul ponta fina', preco: 2.50, estoque: 150, estoqueMin: 20 },
-    { id: 5, nome: 'Mochila Escolar', descricao: 'Mochila resistente 30L', preco: 89.90, estoque: 15, estoqueMin: 5 },
-    { id: 6, nome: 'Notebook', descricao: 'Equipamento novo', preco: 500.00, estoque: 4, estoqueMin: 5 },
-  ];
-
-  produtosFiltrados: Produto[] = []; // ✅ nome corrigido
+  produtos: ProdutoView[] = [];
+  produtosFiltrados: ProdutoView[] = [];
 
   constructor(
     private router: Router,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
+    private produtoService: ProdutoService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.produtosFiltrados = [...this.produtos];
+    this.nomeUsuario = this.authService.getNome();
+    this.carregarProdutos();
   }
 
-  filtrarProdutos() { // ✅ nome corrigido
+  // Converte do formato do backend para o formato da view
+  private mapear(p: Produto): ProdutoView {
+    return {
+      id: p.id,
+      nome: p.nomepro,
+      descricao: p.desc,
+      preco: Number(p.preco),
+      estoque: p.quantidade,
+      estoqueMin: Number(p.quantidade_minima),
+    };
+  }
+
+  async carregarProdutos() {
+    const loading = await this.loadingCtrl.create({ message: 'Carregando...' });
+    await loading.present();
+
+    this.produtoService.listar().subscribe({
+      next: async (data) => {
+        await loading.dismiss();
+        this.produtos = data.map(p => this.mapear(p));
+        this.filtrarProdutos();
+      },
+      error: async () => {
+        await loading.dismiss();
+        this.mostrarToast('Erro ao carregar produtos.', 'danger');
+      },
+    });
+  }
+
+  filtrarProdutos() {
     const termo = this.termoBusca.toLowerCase().trim();
     this.produtosFiltrados = termo
       ? this.produtos.filter(p => p.nome.toLowerCase().includes(termo))
@@ -50,25 +81,90 @@ export class ProdutoPage implements OnInit { // ✅ Nome corrigido
   }
 
   novoProduto() {
-    this.router.navigate(['/produto-form']);
+    this.abrirFormulario();
   }
 
-  editarProduto(produto: Produto) {
-    this.router.navigate(['/produto-form', produto.id]);
+  editarProduto(produto: ProdutoView) {
+    this.abrirFormulario(produto);
   }
 
-  async excluirProduto(produto: Produto) {
+  async abrirFormulario(produto?: ProdutoView) {
+    const isEdicao = !!produto;
+    const alert = await this.alertCtrl.create({
+      header: isEdicao ? 'Editar Produto' : 'Novo Produto',
+      inputs: [
+        { name: 'nomepro',          type: 'text',   placeholder: 'Nome',           value: produto?.nome ?? '' },
+        { name: 'desc',             type: 'text',   placeholder: 'Descrição',      value: produto?.descricao ?? '' },
+        { name: 'preco',            type: 'number', placeholder: 'Preço (R$)',     value: produto?.preco ?? '' },
+        { name: 'quantidade',       type: 'number', placeholder: 'Estoque',        value: produto?.estoque ?? '' },
+        { name: 'quantidade_minima',type: 'number', placeholder: 'Estoque mínimo', value: produto?.estoqueMin ?? '' },
+      ],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: isEdicao ? 'Salvar' : 'Cadastrar',
+          handler: (dados) => {
+            if (!dados.nomepro || !dados.desc || !dados.preco || !dados.quantidade || !dados.quantidade_minima) {
+              this.mostrarToast('Preencha todos os campos.', 'warning');
+              return false;
+            }
+            const payload = {
+              nomepro: dados.nomepro,
+              desc: dados.desc,
+              preco: parseFloat(dados.preco),
+              quantidade: parseInt(dados.quantidade, 10),
+              quantidade_minima: parseInt(dados.quantidade_minima, 10),
+            };
+            if (isEdicao) {
+              this.salvarEdicao(produto!.id, payload);
+            } else {
+              this.salvarNovo(payload);
+            }
+            return true;
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private salvarNovo(payload: any) {
+    this.produtoService.cadastrar(payload).subscribe({
+      next: () => {
+        this.mostrarToast('Produto cadastrado!', 'success');
+        this.carregarProdutos();
+      },
+      error: () => this.mostrarToast('Erro ao cadastrar produto.', 'danger'),
+    });
+  }
+
+  private salvarEdicao(id: number, payload: any) {
+    this.produtoService.editar(id, payload).subscribe({
+      next: () => {
+        this.mostrarToast('Produto atualizado!', 'success');
+        this.carregarProdutos();
+      },
+      error: () => this.mostrarToast('Erro ao atualizar produto.', 'danger'),
+    });
+  }
+
+  async excluirProduto(produto: ProdutoView) {
     const alert = await this.alertCtrl.create({
       header: 'Confirmar exclusão',
-      message: `Deseja excluir o produto "${produto.nome}"?`,
+      message: `Deseja excluir "${produto.nome}"?`,
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Excluir',
           role: 'destructive',
           handler: () => {
-            this.produtos = this.produtos.filter(p => p.id !== produto.id);
-            this.filtrarProdutos(); // ✅ nome corrigido
+            this.produtoService.excluir(produto.id).subscribe({
+              next: () => {
+                this.mostrarToast('Produto excluído!', 'success');
+                this.carregarProdutos();
+              },
+              error: () => this.mostrarToast('Erro ao excluir produto.', 'danger'),
+            });
           },
         },
       ],
@@ -77,10 +173,16 @@ export class ProdutoPage implements OnInit { // ✅ Nome corrigido
   }
 
   sair() {
+    this.authService.logout();
     this.router.navigate(['/home']);
   }
 
   voltar() {
-    window.history.back(); // ✅ corrigido (router.back não existe)
+    window.history.back();
+  }
+
+  private async mostrarToast(message: string, color: 'success' | 'danger' | 'warning') {
+    const toast = await this.toastCtrl.create({ message, color, duration: 2500, position: 'bottom' });
+    await toast.present();
   }
 }
