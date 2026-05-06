@@ -75,12 +75,15 @@
     </div>
 
     <!-- Histórico de movimentações -->
-    <h2 class="historico-title">Histórico de Movimentações</h2>
+    <div class="historico-header">
+      <h2 class="historico-title">Histórico de Movimentações</h2>
+      <p class="historico-subtitle">Últimas movimentações registradas</p>
+    </div>
     <div class="table-wrapper">
       <table class="mov-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Data</th>
             <th>Produto</th>
             <th>Tipo</th>
             <th>Quantidade</th>
@@ -88,7 +91,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let m of historico">
-            <td>{{ m.id }}</td>
+            <td>{{ m.data | date:'dd/MM/yyyy' }}</td>
             <td>{{ m.produto }}</td>
             <td>
               <span class="badge" [class.badge-entrada]="m.tipo === 'Entrada'"

@@ -21,6 +21,8 @@ interface ProdutoView {
   standalone: true,
   imports: [IonicModule, FormsModule, CommonModule],
 })
+
+
 export class MovimentacaoPage implements OnInit {
   nomeUsuario: string = 'Usuário';
   produtosOrdenados: ProdutoView[] = [];

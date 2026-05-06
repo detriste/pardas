@@ -4,8 +4,8 @@ import { IonicModule, AlertController, LoadingController, ToastController } from
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ProdutoService, Produto } from '../services/produto.service';
-import { AuthService } from '../services/auth.service';
+import { ProdutoService, Produto } from '../services/produto';
+import { AuthService } from '../services/auth';
 
 // Modelo local mapeado do backend
 interface ProdutoView {
