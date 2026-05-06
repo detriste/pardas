@@ -1,221 +1,157 @@
 /* ── Toolbar ─────────────────────────────────────── */
 .main-toolbar {
-    --background: #2b2b2b;
-    --color: #ffffff;
-    --min-height: 52px;
+    --background: #2f2f2f;
+    --color: #fff;
+    --min-height: 48px;
+    padding: 0 10px;
   }
   
   .toolbar-title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
-    color: #ffffff;
-    letter-spacing: 0.4px;
   }
   
   .toolbar-end {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding-right: 12px;
+    gap: 8px;
   }
   
   .toolbar-greeting {
-    font-size: 13px;
-    color: #dddddd;
-  
-    strong {
-      color: #ffffff;
-    }
+    font-size: 12px;
+    color: #ccc;
   }
   
   .btn-sair {
-    --background: #cc2200;
-    --background-activated: #aa1a00;
-    --background-hover: #aa1a00;
-    --border-radius: 3px;
-    --color: #ffffff;
-    --padding-start: 12px;
-    --padding-end: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    height: 30px;
-    letter-spacing: 0.3px;
+    --background: #d32f2f;
+    --border-radius: 2px;
+    font-size: 11px;
+    height: 28px;
   }
   
   /* ── Content ─────────────────────────────────────── */
   .produtos-content {
-    --background: #f4f4f4;
+    --background: #f2f2f2;
   }
   
   .page-container {
-    padding: 28px 24px;
-    max-width: 1100px;
+    padding: 20px;
+    max-width: 1000px;
     margin: 0 auto;
   }
   
-  /* ── Section Header ──────────────────────────────── */
-  .section-header {
-    margin-bottom: 20px;
-  }
-  
+  /* ── Header ─────────────────────────────────────── */
   .section-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: bold;
   }
   
   .section-subtitle {
-    font-size: 13px;
-    color: #777777;
-    margin: 0;
+    font-size: 12px;
+    color: #777;
   }
   
-  /* ── Actions Bar ─────────────────────────────────── */
+  /* ── Actions ─────────────────────────────────────── */
   .actions-bar {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
+    align-items: center;
+    margin: 12px 0;
   }
   
-  .search-bar {
+  /* ── Search Bar estilo sistema ───────────────────── */
+.search-bar {
     --background: #ffffff;
-    --border-radius: 3px;
-    --box-shadow: none;
-    --color: #333333;
-    --placeholder-color: #aaaaaa;
-    --icon-color: #888888;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
+    --color: #333;
+    --placeholder-color: #888;
+    --icon-color: #666;
+  
+    height: 34px;
     max-width: 260px;
+  
+    border: 1px solid #cfcfcf;
+    border-radius: 2px; // 🔥 menos arredondado
+  
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  
     padding: 0;
-    height: 36px;
-    font-size: 13px;
   }
   
-  .action-buttons {
-    display: flex;
-    gap: 8px;
-  }
-  
-  .btn-novo {
-    --background: #2b2b2b;
-    --background-activated: #444444;
-    --background-hover: #444444;
-    --border-radius: 3px;
-    --color: #ffffff;
-    --padding-start: 14px;
-    --padding-end: 14px;
+  /* força o input interno ficar igual ao print */
+  .search-bar .searchbar-input {
+    height: 34px !important;
+    border-radius: 2px !important;
     font-size: 12px;
-    font-weight: 600;
-    height: 34px;
-    letter-spacing: 0.3px;
+    padding-left: 30px !important;
+    box-shadow: none !important;
   }
   
-  .btn-voltar {
-    --border-radius: 3px;
-    --color: #555555;
-    --border-color: #aaaaaa;
-    --padding-start: 14px;
-    --padding-end: 14px;
-    font-size: 12px;
-    font-weight: 600;
-    height: 34px;
-    letter-spacing: 0.3px;
+  /* ícone da lupa alinhado */
+  .search-bar .searchbar-search-icon {
+    left: 8px !important;
+    width: 14px !important;
+    height: 14px !important;
+  }
+  
+  /* remove aquele efeito moderno */
+  .search-bar .searchbar-clear-button {
+    display: none !important;
+  }
+  
+  .action-buttons ion-button {
+    height: 30px;
+    font-size: 11px;
   }
   
   /* ── Table ───────────────────────────────────────── */
   .table-wrapper {
-    overflow-x: auto;
-    background: #ffffff;
-    border-radius: 4px;
-    border: 1px solid #dddddd;
+    background: #fff;
+    border: 1px solid #ccc;
   }
   
   .produtos-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 12px;
+  }
   
-    thead tr {
-      background: #2b2b2b;
-      color: #ffffff;
-    }
+  .produtos-table thead {
+    background: #2f2f2f;
+    color: #fff;
+  }
   
-    th {
-      padding: 11px 14px;
-      text-align: left;
-      font-weight: 600;
-      font-size: 13px;
-      letter-spacing: 0.2px;
-      white-space: nowrap;
-    }
+  .produtos-table th {
+    padding: 8px;
+    text-align: left;
+  }
   
-    tbody tr {
-      border-bottom: 1px solid #eeeeee;
-      transition: background 0.15s;
+  .produtos-table td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+  }
   
-      &:last-child {
-        border-bottom: none;
-      }
+  .produtos-table tr:hover {
+    background: #f9f9f9;
+  }
   
-      &:hover {
-        background: #f9f9f9;
-      }
+  .estoque-baixo td {
+    background: #fff3e0;
+  }
   
-      &.estoque-baixo td {
-        background: #fff8f0;
-      }
-    }
+  /* ── Botões ─────────────────────────────────────── */
+  .btn-editar {
+    --background: #f9a825;
+    font-size: 10px;
+    height: 26px;
+  }
   
-    td {
-      padding: 10px 14px;
-      color: #333333;
-      vertical-align: middle;
-    }
+  .btn-excluir {
+    --background: #d32f2f;
+    font-size: 10px;
+    height: 26px;
   }
   
   .acoes-cell {
     display: flex;
-    gap: 6px;
-    align-items: center;
-    white-space: nowrap;
-  }
-  
-  .btn-editar {
-    --background: #e6a817;
-    --background-activated: #c98f10;
-    --background-hover: #c98f10;
-    --border-radius: 3px;
-    --color: #ffffff;
-    --padding-start: 10px;
-    --padding-end: 10px;
-    font-size: 11px;
-    font-weight: 700;
-    height: 28px;
-    letter-spacing: 0.3px;
-  }
-  
-  .btn-excluir {
-    --background: #cc2200;
-    --background-activated: #aa1a00;
-    --background-hover: #aa1a00;
-    --border-radius: 3px;
-    --color: #ffffff;
-    --padding-start: 10px;
-    --padding-end: 10px;
-    font-size: 11px;
-    font-weight: 700;
-    height: 28px;
-    letter-spacing: 0.3px;
-  }
-  
-  .sem-resultados {
-    text-align: center;
-    color: #888888;
-    padding: 32px 0 !important;
-    font-style: italic;
+    gap: 4px;
   }

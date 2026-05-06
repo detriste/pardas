@@ -1,9 +1,20 @@
 <ion-header>
   <ion-toolbar class="main-toolbar">
     <ion-title class="toolbar-title">Gestão de Estoque</ion-title>
+
     <div slot="end" class="toolbar-end">
-      <span class="toolbar-greeting">Olá, <strong>{{ nomeUsuario }}</strong></span>
-      <ion-button class="btn-sair" size="small" (click)="sair()">Sair</ion-button>
+      <span class="toolbar-greeting">
+        Olá, <strong>{{ nomeUsuario }}</strong>
+      </span>
+
+      <ion-button
+        class="btn-sair"
+        size="small"
+        fill="solid"
+        (click)="sair()"
+      >
+        Sair
+      </ion-button>
     </div>
   </ion-toolbar>
 </ion-header>
@@ -11,78 +22,103 @@
 <ion-content class="produtos-content">
   <div class="page-container">
 
-    <!-- Cabeçalho da seção -->
+    <!-- Cabeçalho -->
     <div class="section-header">
-      <div>
-        <h1 class="section-title">Cadastro de Produtos</h1>
-        <p class="section-subtitle">Gerencie o catálogo de produtos do sistema</p>
-      </div>
+      <h1 class="section-title">Cadastro de Produtos</h1>
+      <p class="section-subtitle">
+        Gerencie o catálogo de produtos do sistema
+      </p>
     </div>
 
-    <!-- Barra de ações -->
+    <!-- Ações -->
     <div class="actions-bar">
+
       <ion-searchbar
         class="search-bar"
         placeholder="Buscar produto por nome..."
         [(ngModel)]="termoBusca"
         (ionInput)="filtrarProdutos()"
         debounce="300"
+        show-clear-button="never"
       ></ion-searchbar>
 
       <div class="action-buttons">
-        <ion-button class="btn-novo" size="small" (click)="novoProduto()">
+        <ion-button
+          class="btn-novo"
+          size="small"
+          fill="solid"
+          (click)="novoProduto()"
+        >
           + Novo Produto
         </ion-button>
-        <ion-button class="btn-voltar" size="small" fill="outline" (click)="voltar()">
-          Voltar
+
+        <ion-button
+          class="btn-voltar"
+          size="small"
+          fill="outline"
+          (click)="voltar()"
+        >
+          Movimentações
         </ion-button>
       </div>
     </div>
 
-    <!-- Tabela de produtos -->
+    <!-- Tabela -->
     <div class="table-wrapper">
       <table class="produtos-table">
+
         <thead>
           <tr>
             <th>ID</th>
             <th>Nome</th>
             <th>Descrição</th>
-            <th>Preço (R$)</th>
+            <th>Preço</th>
             <th>Estoque</th>
             <th>Estoque Min.</th>
             <th>Ações</th>
           </tr>
         </thead>
+
         <tbody>
-          <tr *ngFor="let produto of produtosFiltrados" [class.estoque-baixo]="produto.estoque <= produto.estoqueMin">
+          <tr
+            *ngFor="let produto of produtosFiltrados"
+            [class.estoque-baixo]="produto.estoque <= produto.estoqueMin"
+          >
             <td>{{ produto.id }}</td>
             <td>{{ produto.nome }}</td>
             <td>{{ produto.descricao }}</td>
-            <td>{{ produto.preco | number:'1.2-2' }}</td>
+            <td>R$ {{ produto.preco | number:'1.2-2' }}</td>
             <td>{{ produto.estoque }}</td>
             <td>{{ produto.estoqueMin }}</td>
+
             <td class="acoes-cell">
               <ion-button
                 class="btn-editar"
                 size="small"
+                fill="solid"
                 (click)="editarProduto(produto)"
               >
                 Editar
               </ion-button>
+
               <ion-button
                 class="btn-excluir"
                 size="small"
-                color="danger"
+                fill="solid"
                 (click)="excluirProduto(produto)"
               >
                 Excluir
               </ion-button>
             </td>
           </tr>
+
           <tr *ngIf="produtosFiltrados.length === 0">
-            <td colspan="7" class="sem-resultados">Nenhum produto encontrado.</td>
+            <td colspan="7" class="sem-resultados">
+              Nenhum produto encontrado.
+            </td>
           </tr>
         </tbody>
+
       </table>
     </div>
 
