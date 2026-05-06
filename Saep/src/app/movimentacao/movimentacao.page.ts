@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { IonicModule, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ProdutoService, Produto } from '../services/produto';
+import { ProdutoService } from '../services/produto';
 import { MovimentacaoService, Movimentacao } from '../services/movimentacao';
 import { AuthService } from '../services/auth';
 
@@ -26,8 +26,13 @@ export class MovimentacaoPage implements OnInit {
   produtosOrdenados: ProdutoView[] = [];
   produtosAbaixoMinimo: ProdutoView[] = [];
   historico: Movimentacao[] = [];
+  todosProdutos: ProdutoView[] = [];
 
-  private todosProdutos: ProdutoView[] = [];
+  modalAberto: boolean = false;
+  formProdutoId: string = '';
+  formTipo: string = '';
+  formQuantidade: number | null = null;
+  formData: string = '';
 
   constructor(
     private router: Router,
@@ -87,71 +92,39 @@ export class MovimentacaoPage implements OnInit {
     return arr;
   }
 
-  async novaMovimentacao() {
+  novaMovimentacao() {
     if (this.todosProdutos.length === 0) {
       this.mostrarToast('Nenhum produto cadastrado.', 'warning');
       return;
     }
-
-    const alertTipo = await this.alertCtrl.create({
-      header: 'Tipo de Movimentação',
-      inputs: [
-        { name: 'tipo', type: 'radio', label: 'Entrada', value: 'Entrada', checked: true },
-        { name: 'tipo', type: 'radio', label: 'Saída', value: 'Saida' },
-      ],
-      buttons: [
-        { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Próximo',
-          handler: (tipo) => {
-            this.abrirFormMovimentacao(tipo);
-          },
-        },
-      ],
-    });
-    await alertTipo.present();
+    const hoje = new Date().toISOString().split('T')[0];
+    this.formProdutoId = '';
+    this.formTipo = '';
+    this.formQuantidade = null;
+    this.formData = hoje;
+    this.modalAberto = true;
   }
 
-  private async abrirFormMovimentacao(tipo: string) {
-    const opcoesProdutos = this.todosProdutos
-      .map((p: ProdutoView) => `• [${p.id}] ${p.nome} (estoque: ${p.estoque})`)
-      .join('<br>');
+  fecharModal() {
+    this.modalAberto = false;
+  }
 
-    const alert = await this.alertCtrl.create({
-      header: `Nova Movimentação — ${tipo}`,
-      message: `<small><b>Produtos:</b><br>${opcoesProdutos}</small>`,
-      inputs: [
-        {
-          name: 'produto_id',
-          type: 'number',
-          placeholder: `ID do produto (1 a ${this.todosProdutos.length})`,
-        },
-        {
-          name: 'quantidade',
-          type: 'number',
-          placeholder: 'Quantidade',
-        },
-      ],
-      buttons: [
-        { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Registrar',
-          handler: (dados) => {
-            const id = parseInt(dados.produto_id, 10);
-            const qtd = parseInt(dados.quantidade, 10);
+  confirmarMovimentacao() {
+    const id = parseInt(this.formProdutoId, 10);
+    const qtd = Number(this.formQuantidade);
 
-            if (!id || !qtd) {
-              this.mostrarToast('Preencha todos os campos.', 'warning');
-              return false;
-            }
+    if (!id || !this.formTipo || !qtd || !this.formData) {
+      this.mostrarToast('Preencha todos os campos.', 'warning');
+      return;
+    }
 
-            this.registrar({ produto_id: id, tipo: tipo as 'Entrada' | 'Saida', quantidade: qtd });
-            return true;
-          },
-        },
-      ],
+    this.registrar({
+      produto_id: id,
+      tipo: this.formTipo as 'Entrada' | 'Saida',
+      quantidade: qtd,
     });
-    await alert.present();
+
+    this.fecharModal();
   }
 
   private registrar(payload: { produto_id: number; tipo: 'Entrada' | 'Saida'; quantidade: number }) {

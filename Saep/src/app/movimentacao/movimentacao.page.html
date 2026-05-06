@@ -108,4 +108,46 @@
     </div>
 
   </div>
+
+  <!-- Modal Nova Movimentação -->
+  <div class="modal-overlay" *ngIf="modalAberto" (click)="fecharModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">Nova Movimentação</h2>
+
+      <div class="form-group">
+        <label class="form-label">Produto <span class="obrigatorio">*</span></label>
+        <select class="form-select" [(ngModel)]="formProdutoId">
+          <option value="">Selecione um produto...</option>
+          <option *ngFor="let p of todosProdutos" [value]="p.id">
+            {{ p.nome }} (estoque: {{ p.estoque }})
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tipo de Movimentação <span class="obrigatorio">*</span></label>
+        <select class="form-select" [(ngModel)]="formTipo">
+          <option value="">Selecione...</option>
+          <option value="Entrada">Entrada</option>
+          <option value="Saida">Saída</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Quantidade <span class="obrigatorio">*</span></label>
+        <input class="form-input" type="number" [(ngModel)]="formQuantidade" placeholder="0" min="1" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Data da Movimentação <span class="obrigatorio">*</span></label>
+        <input class="form-input" type="date" [(ngModel)]="formData" />
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancelar" (click)="fecharModal()">Cancelar</button>
+        <button class="btn-registrar" (click)="confirmarMovimentacao()">Registrar</button>
+      </div>
+    </div>
+  </div>
+
 </ion-content>
