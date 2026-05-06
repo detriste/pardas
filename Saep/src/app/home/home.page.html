@@ -1,20 +1,37 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="login-content">
+  <div class="login-wrapper">
+    <div class="login-card">
+      <h2 class="login-title">Sistema de Gestão de Estoque</h2>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <div class="form-group">
+        <label class="field-label">E-mail</label>
+        <ion-input
+          class="custom-input"
+          type="email"
+          placeholder="Digite seu e-mail"
+          [(ngModel)]="email"
+          clearInput
+        ></ion-input>
+      </div>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      <div class="form-group">
+        <label class="field-label">Senha</label>
+        <ion-input
+          class="custom-input"
+          type="password"
+          placeholder="Digite sua senha"
+          [(ngModel)]="senha"
+          clearOnEdit="false"
+        ></ion-input>
+      </div>
+
+      <ion-button
+        expand="block"
+        class="btn-entrar"
+        (click)="entrar()"
+      >
+        Entrar
+      </ion-button>
+    </div>
   </div>
 </ion-content>

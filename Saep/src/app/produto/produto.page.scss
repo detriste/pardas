@@ -1,0 +1,221 @@
+/* ── Toolbar ─────────────────────────────────────── */
+.main-toolbar {
+    --background: #2b2b2b;
+    --color: #ffffff;
+    --min-height: 52px;
+  }
+  
+  .toolbar-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.4px;
+  }
+  
+  .toolbar-end {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 12px;
+  }
+  
+  .toolbar-greeting {
+    font-size: 13px;
+    color: #dddddd;
+  
+    strong {
+      color: #ffffff;
+    }
+  }
+  
+  .btn-sair {
+    --background: #cc2200;
+    --background-activated: #aa1a00;
+    --background-hover: #aa1a00;
+    --border-radius: 3px;
+    --color: #ffffff;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    height: 30px;
+    letter-spacing: 0.3px;
+  }
+  
+  /* ── Content ─────────────────────────────────────── */
+  .produtos-content {
+    --background: #f4f4f4;
+  }
+  
+  .page-container {
+    padding: 28px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  /* ── Section Header ──────────────────────────────── */
+  .section-header {
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 4px 0;
+  }
+  
+  .section-subtitle {
+    font-size: 13px;
+    color: #777777;
+    margin: 0;
+  }
+  
+  /* ── Actions Bar ─────────────────────────────────── */
+  .actions-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .search-bar {
+    --background: #ffffff;
+    --border-radius: 3px;
+    --box-shadow: none;
+    --color: #333333;
+    --placeholder-color: #aaaaaa;
+    --icon-color: #888888;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    max-width: 260px;
+    padding: 0;
+    height: 36px;
+    font-size: 13px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .btn-novo {
+    --background: #2b2b2b;
+    --background-activated: #444444;
+    --background-hover: #444444;
+    --border-radius: 3px;
+    --color: #ffffff;
+    --padding-start: 14px;
+    --padding-end: 14px;
+    font-size: 12px;
+    font-weight: 600;
+    height: 34px;
+    letter-spacing: 0.3px;
+  }
+  
+  .btn-voltar {
+    --border-radius: 3px;
+    --color: #555555;
+    --border-color: #aaaaaa;
+    --padding-start: 14px;
+    --padding-end: 14px;
+    font-size: 12px;
+    font-weight: 600;
+    height: 34px;
+    letter-spacing: 0.3px;
+  }
+  
+  /* ── Table ───────────────────────────────────────── */
+  .table-wrapper {
+    overflow-x: auto;
+    background: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #dddddd;
+  }
+  
+  .produtos-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  
+    thead tr {
+      background: #2b2b2b;
+      color: #ffffff;
+    }
+  
+    th {
+      padding: 11px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+  
+    tbody tr {
+      border-bottom: 1px solid #eeeeee;
+      transition: background 0.15s;
+  
+      &:last-child {
+        border-bottom: none;
+      }
+  
+      &:hover {
+        background: #f9f9f9;
+      }
+  
+      &.estoque-baixo td {
+        background: #fff8f0;
+      }
+    }
+  
+    td {
+      padding: 10px 14px;
+      color: #333333;
+      vertical-align: middle;
+    }
+  }
+  
+  .acoes-cell {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    white-space: nowrap;
+  }
+  
+  .btn-editar {
+    --background: #e6a817;
+    --background-activated: #c98f10;
+    --background-hover: #c98f10;
+    --border-radius: 3px;
+    --color: #ffffff;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    height: 28px;
+    letter-spacing: 0.3px;
+  }
+  
+  .btn-excluir {
+    --background: #cc2200;
+    --background-activated: #aa1a00;
+    --background-hover: #aa1a00;
+    --border-radius: 3px;
+    --color: #ffffff;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    height: 28px;
+    letter-spacing: 0.3px;
+  }
+  
+  .sem-resultados {
+    text-align: center;
+    color: #888888;
+    padding: 32px 0 !important;
+    font-style: italic;
+  }
