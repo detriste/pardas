@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { IonicModule, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ProdutoService, Produto } from '../services/produto';
-import { AuthService } from '../services/auth';
+import { HttpClientModule } from '@angular/common/http';
+import { ProdutoService, Produto } from '../services/produto.service';
+import { AuthService } from '../services/auth.service';
 
 // Modelo local mapeado do backend
 interface ProdutoView {
@@ -21,7 +22,7 @@ interface ProdutoView {
   templateUrl: './produto.page.html',
   styleUrls: ['./produto.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule],
+  imports: [IonicModule, FormsModule, CommonModule, HttpClientModule],
 })
 export class ProdutoPage implements OnInit {
   termoBusca: string = '';
@@ -178,7 +179,7 @@ export class ProdutoPage implements OnInit {
   }
 
   voltar() {
-    window.history.back();
+    this.router.navigate(['/movimentacao']);
   }
 
   private async mostrarToast(message: string, color: 'success' | 'danger' | 'warning') {

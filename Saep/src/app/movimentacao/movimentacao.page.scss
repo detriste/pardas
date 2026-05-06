@@ -1,0 +1,146 @@
+/* ── Toolbar ─────────────────────────────────────── */
+.main-toolbar {
+    --background: #2f2f2f;
+    --color: #fff;
+    --min-height: 48px;
+    padding: 0 10px;
+  }
+  
+  .toolbar-title { font-size: 14px; font-weight: 600; }
+  
+  .toolbar-end {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .toolbar-greeting { font-size: 12px; color: #ccc; strong { color: #fff; } }
+  
+  .btn-sair {
+    --background: #d32f2f;
+    --border-radius: 2px;
+    font-size: 11px;
+    height: 28px;
+  }
+  
+  /* ── Content ─────────────────────────────────────── */
+  .mov-content { --background: #f2f2f2; }
+  
+  .page-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  /* ── Alerta ──────────────────────────────────────── */
+  .alerta-estoque {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #fff8e1;
+    border: 1px solid #f9a825;
+    border-radius: 3px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #795548;
+  }
+  
+  .alerta-icon {
+    font-size: 18px;
+    color: #f9a825;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  
+  .alerta-item {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  
+  /* ── Header ──────────────────────────────────────── */
+  .section-title { font-size: 18px; font-weight: bold; margin: 0 0 2px 0; }
+  .section-subtitle { font-size: 12px; color: #777; margin: 0; }
+  
+  /* ── Actions ─────────────────────────────────────── */
+  .actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 14px 0 10px 0;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .sort-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .action-buttons { display: flex; gap: 6px; }
+  
+  .btn-novo {
+    --background: #2f2f2f;
+    --border-radius: 2px;
+    font-size: 11px;
+    height: 30px;
+  }
+  
+  .btn-voltar {
+    --border-radius: 2px;
+    --color: #555;
+    --border-color: #aaa;
+    font-size: 11px;
+    height: 30px;
+  }
+  
+  /* ── Tables ──────────────────────────────────────── */
+  .table-wrapper {
+    background: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  
+  .mov-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  
+    thead tr { background: #2f2f2f; color: #fff; }
+    th { padding: 8px 12px; text-align: left; font-weight: 600; }
+    td { padding: 8px 12px; border-bottom: 1px solid #eee; color: #333; }
+  
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #fafafa; }
+  }
+  
+  .sem-resultados {
+    text-align: center;
+    color: #888;
+    padding: 24px 0 !important;
+    font-style: italic;
+  }
+  
+  /* ── Badges ──────────────────────────────────────── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  
+  .badge-normal  { background: #e8f5e9; color: #2e7d32; }
+  .badge-baixo   { background: #fff3e0; color: #e65100; }
+  .badge-entrada { background: #e3f2fd; color: #1565c0; }
+  .badge-saida   { background: #fce4ec; color: #c62828; }
+  
+  /* ── Histórico título ────────────────────────────── */
+  .historico-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    color: #222;
+  }

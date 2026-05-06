@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar class="main-toolbar">
+    <ion-title class="toolbar-title">Gestão de Estoque</ion-title>
+    <div slot="end" class="toolbar-end">
+      <span class="toolbar-greeting">Olá, <strong>{{ nomeUsuario }}</strong></span>
+      <ion-button class="btn-sair" size="small" (click)="sair()">Sair</ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="mov-content">
+  <div class="page-container">
+
+    <!-- Alerta de estoque baixo -->
+    <div class="alerta-estoque" *ngIf="produtosAbaixoMinimo.length > 0">
+      <ion-icon name="warning-outline" class="alerta-icon"></ion-icon>
+      <div>
+        <strong>Alertas de Estoque:</strong>
+        <div *ngFor="let p of produtosAbaixoMinimo" class="alerta-item">
+          "{{ p.nome }}" está abaixo do mínimo ({{ p.estoque }}/{{ p.estoqueMin }})
+        </div>
+      </div>
+    </div>
+
+    <!-- Cabeçalho + ações -->
+    <div class="section-header">
+      <div>
+        <h1 class="section-title">Gestão de Estoque</h1>
+        <p class="section-subtitle">Registre movimentações de entrada e saída</p>
+      </div>
+    </div>
+
+    <div class="actions-bar">
+      <span class="sort-label">Produtos ordenados alfabeticamente (Bubble Sort)</span>
+      <div class="action-buttons">
+        <ion-button class="btn-novo" size="small" (click)="novaMovimentacao()">
+          + Nova Movimentação
+        </ion-button>
+        <ion-button class="btn-voltar" size="small" fill="outline" (click)="voltar()">
+          Voltar
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Tabela de estoque -->
+    <div class="table-wrapper">
+      <table class="mov-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Est. Mínimo</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of produtosOrdenados">
+            <td>{{ p.id }}</td>
+            <td>{{ p.nome }}</td>
+            <td>{{ p.estoque }}</td>
+            <td>{{ p.estoqueMin }}</td>
+            <td>
+              <span class="badge" [class.badge-normal]="p.estoque > p.estoqueMin"
+                                  [class.badge-baixo]="p.estoque <= p.estoqueMin">
+                {{ p.estoque > p.estoqueMin ? 'Normal' : 'Abaixo do mínimo' }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="produtosOrdenados.length === 0">
+            <td colspan="5" class="sem-resultados">Nenhum produto cadastrado.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Histórico de movimentações -->
+    <h2 class="historico-title">Histórico de Movimentações</h2>
+    <div class="table-wrapper">
+      <table class="mov-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Produto</th>
+            <th>Tipo</th>
+            <th>Quantidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of historico">
+            <td>{{ m.id }}</td>
+            <td>{{ m.produto }}</td>
+            <td>
+              <span class="badge" [class.badge-entrada]="m.tipo === 'Entrada'"
+                                  [class.badge-saida]="m.tipo === 'Saida'">
+                {{ m.tipo }}
+              </span>
+            </td>
+            <td>{{ m.quantidade }}</td>
+          </tr>
+          <tr *ngIf="historico.length === 0">
+            <td colspan="4" class="sem-resultados">Nenhuma movimentação registrada.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</ion-content>
