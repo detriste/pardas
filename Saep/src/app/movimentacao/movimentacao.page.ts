@@ -21,15 +21,12 @@ interface ProdutoView {
   standalone: true,
   imports: [IonicModule, FormsModule, CommonModule],
 })
-
-
 export class MovimentacaoPage implements OnInit {
   nomeUsuario: string = 'Usuário';
   produtosOrdenados: ProdutoView[] = [];
   produtosAbaixoMinimo: ProdutoView[] = [];
   historico: Movimentacao[] = [];
 
-  // lista original para o formulário de nova movimentação
   private todosProdutos: ProdutoView[] = [];
 
   constructor(
@@ -51,7 +48,6 @@ export class MovimentacaoPage implements OnInit {
     const loading = await this.loadingCtrl.create({ message: 'Carregando...' });
     await loading.present();
 
-    // Carrega produtos
     this.produtoService.listar().subscribe({
       next: (data: any[]) => {
         const produtos: ProdutoView[] = data.map((p: any) => ({
@@ -60,7 +56,6 @@ export class MovimentacaoPage implements OnInit {
           estoque: p.quantidade,
           estoqueMin: Number(p.quantidade_minima),
         }));
-
         this.todosProdutos = produtos;
         this.produtosOrdenados = this.bubbleSort([...produtos]);
         this.produtosAbaixoMinimo = produtos.filter(p => p.estoque <= p.estoqueMin);
@@ -68,7 +63,6 @@ export class MovimentacaoPage implements OnInit {
       error: () => this.mostrarToast('Erro ao carregar produtos.', 'danger'),
     });
 
-    // Carrega histórico
     this.movimentacaoService.listar().subscribe({
       next: async (data) => {
         await loading.dismiss();
@@ -81,7 +75,6 @@ export class MovimentacaoPage implements OnInit {
     });
   }
 
-  // Bubble Sort por nome do produto
   private bubbleSort(arr: ProdutoView[]): ProdutoView[] {
     const n = arr.length;
     for (let i = 0; i < n - 1; i++) {
@@ -100,12 +93,33 @@ export class MovimentacaoPage implements OnInit {
       return;
     }
 
-    // Monta as opções do select com os produtos
+    const alertTipo = await this.alertCtrl.create({
+      header: 'Tipo de Movimentação',
+      inputs: [
+        { name: 'tipo', type: 'radio', label: 'Entrada', value: 'Entrada', checked: true },
+        { name: 'tipo', type: 'radio', label: 'Saída', value: 'Saida' },
+      ],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Próximo',
+          handler: (tipo) => {
+            this.abrirFormMovimentacao(tipo);
+          },
+        },
+      ],
+    });
+    await alertTipo.present();
+  }
+
+  private async abrirFormMovimentacao(tipo: string) {
     const opcoesProdutos = this.todosProdutos
-      .map(p => ({ label: `${p.nome} (estoque: ${p.estoque})`, value: String(p.id) }));
+      .map((p: ProdutoView) => `• [${p.id}] ${p.nome} (estoque: ${p.estoque})`)
+      .join('<br>');
 
     const alert = await this.alertCtrl.create({
-      header: 'Nova Movimentação',
+      header: `Nova Movimentação — ${tipo}`,
+      message: `<small><b>Produtos:</b><br>${opcoesProdutos}</small>`,
       inputs: [
         {
           name: 'produto_id',
@@ -113,33 +127,21 @@ export class MovimentacaoPage implements OnInit {
           placeholder: `ID do produto (1 a ${this.todosProdutos.length})`,
         },
         {
-          name: 'tipo',
-          type: 'text',
-          placeholder: 'Tipo: Entrada ou Saida',
-        },
-        {
           name: 'quantidade',
           type: 'number',
           placeholder: 'Quantidade',
         },
       ],
-      message: `<small><b>Produtos disponíveis:</b><br>${opcoesProdutos.map(o => `• [${o.value}] ${o.label}`).join('<br>')}</small>`,
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Registrar',
           handler: (dados) => {
             const id = parseInt(dados.produto_id, 10);
-            const tipo = dados.tipo?.trim();
             const qtd = parseInt(dados.quantidade, 10);
 
-            if (!id || !tipo || !qtd) {
+            if (!id || !qtd) {
               this.mostrarToast('Preencha todos os campos.', 'warning');
-              return false;
-            }
-
-            if (tipo !== 'Entrada' && tipo !== 'Saida') {
-              this.mostrarToast('Tipo deve ser "Entrada" ou "Saida".', 'warning');
               return false;
             }
 
