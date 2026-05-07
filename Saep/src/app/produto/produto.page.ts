@@ -45,6 +45,10 @@ export class ProdutoPage implements OnInit {
     this.carregarProdutos();
   }
 
+  ionViewWillEnter() {
+    this.carregarProdutos();
+  }
+
   // Converte do formato do backend para o formato da view
   private mapear(p: Produto): ProdutoView {
     return {
@@ -133,17 +137,17 @@ export class ProdutoPage implements OnInit {
     this.produtoService.cadastrar(payload).subscribe({
       next: () => {
         this.mostrarToast('Produto cadastrado!', 'success');
-        this.carregarProdutos();
+        this.carregarProdutos(); // já existe, só confirma que está aqui
       },
       error: () => this.mostrarToast('Erro ao cadastrar produto.', 'danger'),
     });
   }
-
+  
   private salvarEdicao(id: number, payload: any) {
     this.produtoService.editar(id, payload).subscribe({
       next: () => {
         this.mostrarToast('Produto atualizado!', 'success');
-        this.carregarProdutos();
+        this.carregarProdutos(); // já existe, só confirma que está aqui
       },
       error: () => this.mostrarToast('Erro ao atualizar produto.', 'danger'),
     });

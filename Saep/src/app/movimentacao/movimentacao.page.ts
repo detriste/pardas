@@ -49,6 +49,10 @@ export class MovimentacaoPage implements OnInit {
     this.carregarDados();
   }
 
+  ionViewWillEnter() {
+    this.carregarDados();
+  }
+
   async carregarDados() {
     const loading = await this.loadingCtrl.create({ message: 'Carregando...' });
     await loading.present();
